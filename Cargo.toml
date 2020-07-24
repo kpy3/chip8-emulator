@@ -3,7 +3,6 @@ name = "chip8"
 version = "0.1.0"
 authors = ["Sergey Yelin <elinsn@gmail.com>"]
 edition = "2018"
-license = "Apache 2.0"
 license-file = "LICENSE"
 
 [dependencies]
