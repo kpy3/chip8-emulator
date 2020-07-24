@@ -51,6 +51,14 @@ impl Chip8 {
         self.display.draw(buf);
     }
 
+    pub fn key_released(&mut self, key: usize) {
+        self.keypad.release(key);
+    }
+
+    pub fn key_pressed(&mut self, key: usize) {
+        self.keypad.press(key);
+    }
+
     pub fn tick(&mut self) {
         let opcode = self.memory.get_opcode(self.pc);
         self.pc += 2;

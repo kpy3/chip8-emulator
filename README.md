@@ -28,8 +28,18 @@ Play
 
 Use following control keys for play:
 
-(TBD)
-
+```
+Keypad                   Keyboard
++-+-+-+-+                +-+-+-+-+
+|1|2|3|C|                |1|2|3|4|
++-+-+-+-+                +-+-+-+-+
+|4|5|6|D|                |Q|W|E|R|
++-+-+-+-+       =>       +-+-+-+-+
+|7|8|9|E|                |A|S|D|F|
++-+-+-+-+                +-+-+-+-+
+|A|0|B|F|                |Z|X|C|V|
++-+-+-+-+                +-+-+-+-+
+```
 
 One can download Chip8 ROMs pack [here](https://web.archive.org/web/20130702032522/http://www.chip8.com/downloads/Chip-8%20Pack.zip). 
 

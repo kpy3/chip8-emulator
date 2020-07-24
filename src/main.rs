@@ -3,14 +3,13 @@ mod stack;
 mod display;
 mod memory;
 
-use std::{env, thread};
+use std::env;
 use crate::chip8::Chip8;
-use std::time::Duration;
 use winit::dpi::{LogicalPosition, LogicalSize, PhysicalSize};
 use winit::event::{Event, VirtualKeyCode};
 use winit::event_loop::{ControlFlow, EventLoop};
 use winit_input_helper::WinitInputHelper;
-use pixels::{SurfaceTexture, Pixels, Error};
+use pixels::{SurfaceTexture, Pixels};
 
 mod chip8;
 
@@ -26,8 +25,6 @@ fn main() -> Result<(), String> {
 }
 
 fn run(mut chip8: Chip8) {
-    let sleep_duration = Duration::from_millis(2);
-
     let event_loop = EventLoop::new();
     let mut input = WinitInputHelper::new();
     let (window, surface, width, height, mut _hidpi_factor) =
@@ -55,6 +52,127 @@ fn run(mut chip8: Chip8) {
                 *control_flow = ControlFlow::Exit;
                 return;
             }
+
+            if input.key_pressed(VirtualKeyCode::Key1) {
+                chip8.key_pressed(1);
+            }
+
+            if input.key_pressed(VirtualKeyCode::Key2) {
+                chip8.key_pressed(2);
+            }
+
+            if input.key_pressed(VirtualKeyCode::Key3) {
+                chip8.key_pressed(3);
+            }
+
+            if input.key_pressed(VirtualKeyCode::Q) {
+                chip8.key_pressed(4);
+            }
+
+            if input.key_pressed(VirtualKeyCode::W) {
+                chip8.key_pressed(5);
+            }
+
+            if input.key_pressed(VirtualKeyCode::E) {
+                chip8.key_pressed(6);
+            }
+
+            if input.key_pressed(VirtualKeyCode::R) {
+                chip8.key_pressed(0xD);
+            }
+
+            if input.key_pressed(VirtualKeyCode::A) {
+                chip8.key_pressed(7);
+            }
+
+            if input.key_pressed(VirtualKeyCode::S) {
+                chip8.key_pressed(8);
+            }
+
+            if input.key_pressed(VirtualKeyCode::D) {
+                chip8.key_pressed(9);
+            }
+
+            if input.key_pressed(VirtualKeyCode::F) {
+                chip8.key_pressed(0xE);
+            }
+
+            if input.key_pressed(VirtualKeyCode::Z) {
+                chip8.key_pressed(0xA);
+            }
+
+            if input.key_pressed(VirtualKeyCode::X) {
+                chip8.key_pressed(0);
+            }
+
+            if input.key_pressed(VirtualKeyCode::C) {
+                chip8.key_pressed(0xB);
+            }
+
+            if input.key_pressed(VirtualKeyCode::V) {
+                chip8.key_pressed(0xF);
+            }
+
+            if input.key_released(VirtualKeyCode::Key1) {
+                chip8.key_released(1);
+            }
+
+            if input.key_released(VirtualKeyCode::Key2) {
+                chip8.key_released(2);
+            }
+
+            if input.key_released(VirtualKeyCode::Key3) {
+                chip8.key_released(3);
+            }
+
+            if input.key_released(VirtualKeyCode::Q) {
+                chip8.key_released(4);
+            }
+
+            if input.key_released(VirtualKeyCode::W) {
+                chip8.key_released(5);
+            }
+
+            if input.key_released(VirtualKeyCode::E) {
+                chip8.key_released(6);
+            }
+
+            if input.key_released(VirtualKeyCode::R) {
+                chip8.key_released(0xD);
+            }
+
+            if input.key_released(VirtualKeyCode::A) {
+                chip8.key_released(7);
+            }
+
+            if input.key_released(VirtualKeyCode::S) {
+                chip8.key_released(8);
+            }
+
+            if input.key_released(VirtualKeyCode::D) {
+                chip8.key_released(9);
+            }
+
+            if input.key_released(VirtualKeyCode::F) {
+                chip8.key_released(0xE);
+            }
+
+            if input.key_released(VirtualKeyCode::Z) {
+                chip8.key_released(0xA);
+            }
+
+            if input.key_released(VirtualKeyCode::X) {
+                chip8.key_released(0);
+            }
+
+            if input.key_released(VirtualKeyCode::C) {
+                chip8.key_released(0xB);
+            }
+
+            if input.key_released(VirtualKeyCode::V) {
+                chip8.key_released(0xF);
+            }
+
         }
 
         // Adjust high DPI factor
@@ -69,7 +187,6 @@ fn run(mut chip8: Chip8) {
 
         chip8.tick();
         window.request_redraw();
-        thread::sleep(sleep_duration);
     })
 
 }
