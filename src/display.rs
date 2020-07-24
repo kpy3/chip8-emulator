@@ -36,6 +36,10 @@ impl Display {
         self.changed = true;
     }
 
+    pub fn changed(&self) -> bool {
+        self.changed
+    }
+
     pub fn draw(&mut self, buf: &mut [u8]) {
         for i in 0..self.buffer.len() {
             if self.buffer[i] == 1 {

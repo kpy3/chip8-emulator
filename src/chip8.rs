@@ -47,19 +47,16 @@ impl Chip8 {
         self.memory.load_rom(rom);
     }
 
+    pub fn display_changed(&self) -> bool {
+        self.display.changed()
+    }
+
     pub fn draw(&mut self, buf: &mut [u8]) {
         self.display.draw(buf);
     }
 
-    pub fn key_released(&mut self, key: usize) {
-        self.keypad.release(key);
-    }
-
-    pub fn key_pressed(&mut self, key: usize) {
-        self.keypad.press(key);
-    }
-
-    pub fn tick(&mut self) {
+    pub fn tick(&mut self, keypad: Keypad) {
+        self.keypad = keypad;
         let opcode = self.memory.get_opcode(self.pc);
         self.pc += 2;
         let nibbles = (
@@ -349,7 +346,7 @@ impl Chip8 {
     // LD Vx, K
     // Wait for a key press, store the value of the key in Vx.
     fn op_fx0a(&mut self, x: usize) {
-        for k in 0..16 as u8 {
+        for k in 0..=0xF as u8 {
             if self.keypad.pressed(k as usize) {
                 self.v[x] = k;
                 return;

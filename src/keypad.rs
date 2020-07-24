@@ -1,5 +1,8 @@
+use std::fmt::{Debug, Formatter, Result};
+
 const KEYPAD_SIZE: usize = 16;
 
+#[derive(Copy, Clone)]
 pub struct Keypad {
     keys: [bool; KEYPAD_SIZE]
 }
@@ -23,4 +26,12 @@ impl Keypad {
         self.keys[key]
     }
 
+}
+
+impl Debug for Keypad {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        f.debug_struct("")
+            .field("keys", &self.keys)
+            .finish()
+    }
 }

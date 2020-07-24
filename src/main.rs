@@ -3,13 +3,15 @@ mod stack;
 mod display;
 mod memory;
 
-use std::env;
+use std::{env, thread};
 use crate::chip8::Chip8;
 use winit::dpi::{LogicalPosition, LogicalSize, PhysicalSize};
 use winit::event::{Event, VirtualKeyCode};
 use winit::event_loop::{ControlFlow, EventLoop};
 use winit_input_helper::WinitInputHelper;
 use pixels::{SurfaceTexture, Pixels};
+use crate::keypad::Keypad;
+use std::time::Duration;
 
 mod chip8;
 
@@ -31,18 +33,22 @@ fn run(mut chip8: Chip8) {
         create_window("Chip8 Emulator", &event_loop);
     let surface_texture = SurfaceTexture::new(width, height, surface);
     let mut pixels = Pixels::new(64, 32, surface_texture).unwrap();
+    let sleep_duration = Duration::from_millis(2);
+    let mut keypad = Keypad::new();
 
     event_loop.run(move |event, _, control_flow| {
         // The one and only event that winit_input_helper doesn't have for us...
         if let Event::RedrawRequested(_) = event {
-            chip8.draw(pixels.get_frame());
-            if pixels
-                .render()
-                // .map_err(|e| error!("pixels.render() failed: {}", e))
-                .is_err()
-            {
-                *control_flow = ControlFlow::Exit;
-                return;
+            if chip8.display_changed() {
+                chip8.draw(pixels.get_frame());
+                if pixels
+                    .render()
+                    // .map_err(|e| error!("pixels.render() failed: {}", e))
+                    .is_err()
+                {
+                    *control_flow = ControlFlow::Exit;
+                    return;
+                }
             }
         }
 
@@ -54,139 +60,146 @@ fn run(mut chip8: Chip8) {
             }
 
             if input.key_pressed(VirtualKeyCode::Key1) {
-                chip8.key_pressed(1);
+                keypad.press(1);
             }
 
             if input.key_pressed(VirtualKeyCode::Key2) {
-                chip8.key_pressed(2);
+                keypad.press(2);
             }
 
             if input.key_pressed(VirtualKeyCode::Key3) {
-                chip8.key_pressed(3);
+                keypad.press(3);
+            }
+
+            if input.key_pressed(VirtualKeyCode::Key4) {
+                keypad.press(0xC);
             }
 
             if input.key_pressed(VirtualKeyCode::Q) {
-                chip8.key_pressed(4);
+                keypad.press(4);
             }
 
             if input.key_pressed(VirtualKeyCode::W) {
-                chip8.key_pressed(5);
+                keypad.press(5);
             }
 
             if input.key_pressed(VirtualKeyCode::E) {
-                chip8.key_pressed(6);
+                keypad.press(6);
             }
 
             if input.key_pressed(VirtualKeyCode::R) {
-                chip8.key_pressed(0xD);
+                keypad.press(0xD);
             }
 
             if input.key_pressed(VirtualKeyCode::A) {
-                chip8.key_pressed(7);
+                keypad.press(7);
             }
 
             if input.key_pressed(VirtualKeyCode::S) {
-                chip8.key_pressed(8);
+                keypad.press(8);
             }
 
             if input.key_pressed(VirtualKeyCode::D) {
-                chip8.key_pressed(9);
+                keypad.press(9);
             }
 
             if input.key_pressed(VirtualKeyCode::F) {
-                chip8.key_pressed(0xE);
+                keypad.press(0xE);
             }
 
             if input.key_pressed(VirtualKeyCode::Z) {
-                chip8.key_pressed(0xA);
+                keypad.press(0xA);
             }
 
             if input.key_pressed(VirtualKeyCode::X) {
-                chip8.key_pressed(0);
+                keypad.press(0);
             }
 
             if input.key_pressed(VirtualKeyCode::C) {
-                chip8.key_pressed(0xB);
+                keypad.press(0xB);
             }
 
             if input.key_pressed(VirtualKeyCode::V) {
-                chip8.key_pressed(0xF);
+                keypad.press(0xF);
             }
 
             if input.key_released(VirtualKeyCode::Key1) {
-                chip8.key_released(1);
+                keypad.release(1);
             }
 
             if input.key_released(VirtualKeyCode::Key2) {
-                chip8.key_released(2);
+                keypad.release(2);
             }
 
             if input.key_released(VirtualKeyCode::Key3) {
-                chip8.key_released(3);
+                keypad.release(3);
+            }
+
+            if input.key_released(VirtualKeyCode::Key4) {
+                keypad.release(0xC);
             }
 
             if input.key_released(VirtualKeyCode::Q) {
-                chip8.key_released(4);
+                keypad.release(4);
             }
 
             if input.key_released(VirtualKeyCode::W) {
-                chip8.key_released(5);
+                keypad.release(5);
             }
 
             if input.key_released(VirtualKeyCode::E) {
-                chip8.key_released(6);
+                keypad.release(6);
             }
 
             if input.key_released(VirtualKeyCode::R) {
-                chip8.key_released(0xD);
+                keypad.release(0xD);
             }
 
             if input.key_released(VirtualKeyCode::A) {
-                chip8.key_released(7);
+                keypad.release(7);
             }
 
             if input.key_released(VirtualKeyCode::S) {
-                chip8.key_released(8);
+                keypad.release(8);
             }
 
             if input.key_released(VirtualKeyCode::D) {
-                chip8.key_released(9);
+                keypad.release(9);
             }
 
             if input.key_released(VirtualKeyCode::F) {
-                chip8.key_released(0xE);
+                keypad.release(0xE);
             }
 
             if input.key_released(VirtualKeyCode::Z) {
-                chip8.key_released(0xA);
+                keypad.release(0xA);
             }
 
             if input.key_released(VirtualKeyCode::X) {
-                chip8.key_released(0);
+                keypad.release(0);
             }
 
             if input.key_released(VirtualKeyCode::C) {
-                chip8.key_released(0xB);
+                keypad.release(0xB);
             }
 
             if input.key_released(VirtualKeyCode::V) {
-                chip8.key_released(0xF);
+                keypad.release(0xF);
+            }
+            // Adjust high DPI factor
+            if let Some(factor) = input.scale_factor_changed() {
+                _hidpi_factor = factor;
             }
 
-        }
+            // Resize the window
+            if let Some(size) = input.window_resized() {
+                pixels.resize(size.width, size.height);
+            }
 
-        // Adjust high DPI factor
-        if let Some(factor) = input.scale_factor_changed() {
-            _hidpi_factor = factor;
+            chip8.tick(keypad);
+            window.request_redraw();
+            thread::sleep(sleep_duration);
         }
-
-        // Resize the window
-        if let Some(size) = input.window_resized() {
-            pixels.resize(size.width, size.height);
-        }
-
-        chip8.tick();
-        window.request_redraw();
     })
 
 }
