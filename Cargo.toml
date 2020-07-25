@@ -10,6 +10,7 @@ pixels = "0.1.0"
 rand = "0.7.3"
 winit_input_helper = "0.7.0"
 winit = "0.22.2"
+clap = "3.0.0-beta.1"
 
 # Workaround for build error on macOS
 # Remove this when `gfx-backend-metal` is fixed

@@ -28,7 +28,7 @@ const KEYPAD_MAP: [(usize, VirtualKeyCode); keypad::KEYPAD_SIZE] = [
     (15, VirtualKeyCode::V)
 ];
 
-pub fn run(data: &[u8]) {
+pub fn run(data: &[u8], sleep_duration: u64) {
     let mut chip8 = Chip8::new();
     chip8.load_fontset(&font::DEFAULT_FONTSET);
     chip8.load_rom(&data);
@@ -39,7 +39,7 @@ pub fn run(data: &[u8]) {
         create_window("Chip8 Emulator", &event_loop);
     let surface_texture = SurfaceTexture::new(width, height, surface);
     let mut pixels = Pixels::new(64, 32, surface_texture).unwrap();
-    let sleep_duration = Duration::from_millis(2);
+    let sleep_duration = Duration::from_millis(sleep_duration);
 
     event_loop.run(move |event, _, control_flow| {
         // The one and only event that winit_input_helper doesn't have for us...
