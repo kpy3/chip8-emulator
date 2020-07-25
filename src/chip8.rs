@@ -43,7 +43,7 @@ impl Chip8 {
         self.memory.load_fontset(fontset);
     }
 
-    pub fn load_rom(&mut self, rom: &Vec<u8>) {
+    pub fn load_rom(&mut self, rom: &[u8]) {
         self.memory.load_rom(rom);
     }
 
