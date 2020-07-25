@@ -78,6 +78,11 @@ pub fn run(data: &[u8], sleep_duration: u64) {
 
             chip8.tick(keypad);
             window.request_redraw();
+            if chip8.sound_timer() > 0 {
+                // TODO
+            } else {
+                // TODO
+            }
             thread::sleep(sleep_duration);
         }
     })

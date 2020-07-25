@@ -119,6 +119,10 @@ impl Chip8 {
         }
     }
 
+    pub fn sound_timer(&self) -> u8 {
+        self.sound_timer
+    }
+
     // CLS
     // Clear screen
     fn op_00e0(&mut self) {
