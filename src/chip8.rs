@@ -212,11 +212,7 @@ impl Chip8 {
     // Only the lowest 8 bits of the result are kept, and stored in Vx
     fn op_8xy4(&mut self, x: usize, y: usize) {
         let sum: u16 = self.v[x] as u16 + self.v[y] as u16;
-        if sum > 255 {
-            self.v[0xf] = 1;
-        } else {
-            self.v[0xf] = 0;
-        }
+        self.v[0xf] = if sum > 255 { 1 } else { 0 };
         self.v[x] = sum as u8;
     }
 
@@ -226,11 +222,7 @@ impl Chip8 {
     // If Vx > Vy, then VF is set to 1, otherwise 0. Then Vy is subtracted
     // from Vx, and the results stored in Vx.
     fn op_8xy5(&mut self, x: usize, y: usize) {
-        if self.v[x] > self.v[y] {
-            self.v[0xf] = 1;
-        } else {
-            self.v[0xf] = 0;
-        }
+        self.v[0xf] = if self.v[x] > self.v[y] { 1 } else { 0 };
         self.v[x] = self.v[x].wrapping_sub(self.v[y]);
     }
 
@@ -250,11 +242,7 @@ impl Chip8 {
     // If Vy > Vx, then VF is set to 1, otherwise 0. Then Vx is subtracted from Vy,
     // and the results stored in Vx.
     fn op_8xy7(&mut self, x: usize, y: usize) {
-        if self.v[y] > self.v[x] {
-            self.v[0xf] = 1;
-        } else {
-            self.v[0xf] = 0;
-        }
+        self.v[0xf] = if self.v[y] > self.v[x] { 1 } else { 0 };
         self.v[x] = self.v[y].wrapping_sub(self.v[x]);
     }
 
@@ -372,11 +360,7 @@ impl Chip8 {
     // Set I = I + Vx.
     fn op_fx1e(&mut self, x: usize) {
         self.index += self.v[x] as u16;
-        if self.index > 255 {
-            self.v[0x0f] = 1;
-        } else {
-            self.v[0x0f] = 0
-        }
+        self.v[0x0f] = if self.index > 255 { 1 } else { 0 };
     }
 
     // LD F, Vx
