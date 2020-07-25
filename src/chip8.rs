@@ -7,6 +7,7 @@ use crate::keypad::Keypad;
 
 const REGISTER_COUNT: usize = 16;
 const START_ADDRESS: usize = 0x200;
+const OPCODE_SIZE: u16 = 2;
 
 pub struct Chip8 {
     v: [u8; REGISTER_COUNT],
@@ -58,7 +59,7 @@ impl Chip8 {
     pub fn tick(&mut self, keypad: Keypad) {
         self.keypad = keypad;
         let opcode = self.memory.get_opcode(self.pc);
-        self.pc += 2;
+        self.pc += OPCODE_SIZE;
         let nibbles = (
             (opcode & 0xF000) >> 12 as u8,
             (opcode & 0x0F00) >> 8 as u8,
@@ -272,7 +273,7 @@ impl Chip8 {
     // Skip next instruction if Vx != Vy.
     fn op_9xy0(&mut self, x: usize, y: usize) {
         if self.v[x] != self.v[y] {
-            self.pc += 2;
+            self.pc += OPCODE_SIZE;
         }
     }
 
@@ -324,7 +325,7 @@ impl Chip8 {
     fn op_ex9e(&mut self, x: usize) {
         let key = self.v[x] as usize;
         if self.keypad.pressed(key) {
-            self.pc += 2;
+            self.pc += OPCODE_SIZE;
         }
     }
 
@@ -333,7 +334,7 @@ impl Chip8 {
     fn op_exa1(&mut self, x: usize) {
         let key = self.v[x] as usize;
         if !self.keypad.pressed(key) {
-            self.pc += 2;
+            self.pc += OPCODE_SIZE;
         }
     }
 
@@ -352,7 +353,7 @@ impl Chip8 {
                 return;
             }
         }
-        self.pc -= 2;
+        self.pc -= OPCODE_SIZE;
     }
 
     // LD DT, Vx
