@@ -1,3 +1,5 @@
+mod font;
+mod vm;
 mod keypad;
 mod stack;
 mod display;
@@ -10,7 +12,6 @@ use winit::event::{Event, VirtualKeyCode};
 use winit::event_loop::{ControlFlow, EventLoop};
 use winit_input_helper::WinitInputHelper;
 use pixels::{SurfaceTexture, Pixels};
-use crate::keypad::Keypad;
 use std::time::Duration;
 
 mod chip8;
@@ -20,7 +21,7 @@ fn main() -> Result<(), String> {
     let filename = &args[1];
     let data = std::fs::read(filename).map_err(|e| format!("{}", e))?;
     let mut chip8 = Chip8::new();
-    chip8.load_fontset(&default_fontset());
+    chip8.load_fontset(&font::DEFAULT_FONTSET);
     chip8.load_rom(&data);
     run(chip8);
     Ok(())
@@ -34,7 +35,6 @@ fn run(mut chip8: Chip8) {
     let surface_texture = SurfaceTexture::new(width, height, surface);
     let mut pixels = Pixels::new(64, 32, surface_texture).unwrap();
     let sleep_duration = Duration::from_millis(2);
-    let mut keypad = Keypad::new();
 
     event_loop.run(move |event, _, control_flow| {
         // The one and only event that winit_input_helper doesn't have for us...
@@ -59,133 +59,8 @@ fn run(mut chip8: Chip8) {
                 return;
             }
 
-            if input.key_pressed(VirtualKeyCode::Key1) {
-                keypad.press(1);
-            }
+            let keypad = vm::keypad(&input);
 
-            if input.key_pressed(VirtualKeyCode::Key2) {
-                keypad.press(2);
-            }
-
-            if input.key_pressed(VirtualKeyCode::Key3) {
-                keypad.press(3);
-            }
-
-            if input.key_pressed(VirtualKeyCode::Key4) {
-                keypad.press(0xC);
-            }
-
-            if input.key_pressed(VirtualKeyCode::Q) {
-                keypad.press(4);
-            }
-
-            if input.key_pressed(VirtualKeyCode::W) {
-                keypad.press(5);
-            }
-
-            if input.key_pressed(VirtualKeyCode::E) {
-                keypad.press(6);
-            }
-
-            if input.key_pressed(VirtualKeyCode::R) {
-                keypad.press(0xD);
-            }
-
-            if input.key_pressed(VirtualKeyCode::A) {
-                keypad.press(7);
-            }
-
-            if input.key_pressed(VirtualKeyCode::S) {
-                keypad.press(8);
-            }
-
-            if input.key_pressed(VirtualKeyCode::D) {
-                keypad.press(9);
-            }
-
-            if input.key_pressed(VirtualKeyCode::F) {
-                keypad.press(0xE);
-            }
-
-            if input.key_pressed(VirtualKeyCode::Z) {
-                keypad.press(0xA);
-            }
-
-            if input.key_pressed(VirtualKeyCode::X) {
-                keypad.press(0);
-            }
-
-            if input.key_pressed(VirtualKeyCode::C) {
-                keypad.press(0xB);
-            }
-
-            if input.key_pressed(VirtualKeyCode::V) {
-                keypad.press(0xF);
-            }
-
-            if input.key_released(VirtualKeyCode::Key1) {
-                keypad.release(1);
-            }
-
-            if input.key_released(VirtualKeyCode::Key2) {
-                keypad.release(2);
-            }
-
-            if input.key_released(VirtualKeyCode::Key3) {
-                keypad.release(3);
-            }
-
-            if input.key_released(VirtualKeyCode::Key4) {
-                keypad.release(0xC);
-            }
-
-            if input.key_released(VirtualKeyCode::Q) {
-                keypad.release(4);
-            }
-
-            if input.key_released(VirtualKeyCode::W) {
-                keypad.release(5);
-            }
-
-            if input.key_released(VirtualKeyCode::E) {
-                keypad.release(6);
-            }
-
-            if input.key_released(VirtualKeyCode::R) {
-                keypad.release(0xD);
-            }
-
-            if input.key_released(VirtualKeyCode::A) {
-                keypad.release(7);
-            }
-
-            if input.key_released(VirtualKeyCode::S) {
-                keypad.release(8);
-            }
-
-            if input.key_released(VirtualKeyCode::D) {
-                keypad.release(9);
-            }
-
-            if input.key_released(VirtualKeyCode::F) {
-                keypad.release(0xE);
-            }
-
-            if input.key_released(VirtualKeyCode::Z) {
-                keypad.release(0xA);
-            }
-
-            if input.key_released(VirtualKeyCode::X) {
-                keypad.release(0);
-            }
-
-            if input.key_released(VirtualKeyCode::C) {
-                keypad.release(0xB);
-            }
-
-            if input.key_released(VirtualKeyCode::V) {
-                keypad.release(0xF);
-            }
             // Adjust high DPI factor
             if let Some(factor) = input.scale_factor_changed() {
                 _hidpi_factor = factor;
@@ -250,26 +125,4 @@ fn create_window(
         size.height.round() as u32,
         hidpi_factor,
     )
-}
-
-
-fn default_fontset() -> Vec<u8> {
-    vec![
-        0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
-        0x20, 0x60, 0x20, 0x20, 0x70, // 1
-        0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
-        0xF0, 0x10, 0xF0, 0x10, 0xF0, // 3
-        0x90, 0x90, 0xF0, 0x10, 0x10, // 4
-        0xF0, 0x80, 0xF0, 0x10, 0xF0, // 5
-        0xF0, 0x80, 0xF0, 0x90, 0xF0, // 6
-        0xF0, 0x10, 0x20, 0x40, 0x40, // 7
-        0xF0, 0x90, 0xF0, 0x90, 0xF0, // 8
-        0xF0, 0x90, 0xF0, 0x10, 0xF0, // 9
-        0xF0, 0x90, 0xF0, 0x90, 0x90, // A
-        0xE0, 0x90, 0xE0, 0x90, 0xE0, // B
-        0xF0, 0x80, 0x80, 0x80, 0xF0, // C
-        0xE0, 0x90, 0x90, 0x90, 0xE0, // D
-        0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
-        0xF0, 0x80, 0xF0, 0x80, 0x80  // F
-    ]
 }

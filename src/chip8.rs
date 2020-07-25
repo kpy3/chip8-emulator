@@ -39,7 +39,7 @@ impl Chip8 {
         }
     }
 
-    pub fn load_fontset(&mut self, fontset: &Vec<u8>) {
+    pub fn load_fontset(&mut self, fontset: &[u8]) {
         self.memory.load_fontset(fontset);
     }
 

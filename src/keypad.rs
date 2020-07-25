@@ -1,6 +1,6 @@
 use std::fmt::{Debug, Formatter, Result};
 
-const KEYPAD_SIZE: usize = 16;
+pub const KEYPAD_SIZE: usize = 16;
 
 #[derive(Copy, Clone)]
 pub struct Keypad {
@@ -16,10 +16,6 @@ impl Keypad {
 
     pub fn press(&mut self, key: usize) {
         self.keys[key] = true;
-    }
-
-    pub fn release(&mut self, key: usize) {
-        self.keys[key] = false;
     }
 
     pub fn pressed(&self, key: usize) -> bool {
