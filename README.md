@@ -53,6 +53,13 @@ This realisation tested against two test ROMs:
 *NOTE*: There is at last one not documented error code in BC_Test with code `E 34`, 
 in my case it pointed to wrong implementation of Fx55 and/or Fx65 operation codes.
 
+TODO
+----
+[] Fix some minor bugs
+[] Add audio
+[] Add tests for Chip-8
+[] Cleanup code
+
 Useful Resources
 ---------
 - [Chip 8 Technical Reference](http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#memmap)
