@@ -55,10 +55,10 @@ in my case it pointed to wrong implementation of Fx55 and/or Fx65 operation code
 
 TODO
 ----
-[] Fix some minor bugs
-[] Add audio
-[] Add tests for Chip-8
-[] Cleanup code
+- Fix some minor bugs
+- Add audio
+- Add tests for Chip-8
+- Cleanup code
 
 Useful Resources
 ---------
