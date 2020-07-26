@@ -29,16 +29,16 @@ Play
 Use following control keys for play:
 
 ```
-Keypad                   Keyboard
-+-+-+-+-+                +-+-+-+-+
-|1|2|3|C|                |1|2|3|4|
-+-+-+-+-+                +-+-+-+-+
-|4|5|6|D|                |Q|W|E|R|
-+-+-+-+-+       =>       +-+-+-+-+
-|7|8|9|E|                |A|S|D|F|
-+-+-+-+-+                +-+-+-+-+
-|A|0|B|F|                |Z|X|C|V|
-+-+-+-+-+                +-+-+-+-+
+Chip-8 Keypad              Keyboard
+  +-+-+-+-+                +-+-+-+-+
+  |1|2|3|C|                |1|2|3|4|
+  +-+-+-+-+                +-+-+-+-+
+  |4|5|6|D|                |Q|W|E|R|
+  +-+-+-+-+       =>       +-+-+-+-+
+  |7|8|9|E|                |A|S|D|F|
+  +-+-+-+-+                +-+-+-+-+
+  |A|0|B|F|                |Z|X|C|V|
+  +-+-+-+-+                +-+-+-+-+
 ```
 
 One can download Chip8 ROMs pack [here](https://web.archive.org/web/20130702032522/http://www.chip8.com/downloads/Chip-8%20Pack.zip). 
@@ -60,3 +60,5 @@ Useful Resources
 - [Mastering CHIP-8](http://mattmik.com/files/chip8/mastering/chip8.html)
 - [Emulation Basics: Write your own Chip 8 Emulator/Interpreter](http://omokute.blogspot.com/2012/06/emulation-basics-write-your-own-chip-8.html)
 - [Chip8 web site](https://web.archive.org/web/20130903140414/http://chip8.com/?page=73)
+- [David Winter's CHIP-8 emulation page](http://www.pong-story.com/chip8/)
+- [EMUBook](http://emubook.emulation64.com)
